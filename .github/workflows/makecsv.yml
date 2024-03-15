@@ -33,7 +33,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add Block.csv
-          git commit -m "Add Block prefix to list items"
+          git commit -m "makecsv"
           
       - name: Push changes
         if: steps.check_changes.outputs.workflow_changes != 'Block.csv'

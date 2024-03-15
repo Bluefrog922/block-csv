@@ -12,12 +12,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
-      - name: Check if changes are made by workflow
+      - name: Check if changes are made to block.txt
         id: check_changes
         run: echo "::set-output name=workflow_changes::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
       
       - name: Add Block Prefix
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes == 'block.txt'
         run: |
           # Add Action,Url as the first line
           echo "Action,Url" > Block.csv
@@ -28,7 +28,7 @@ jobs:
           done
           
       - name: Commit changes
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes == 'block.txt'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -36,7 +36,7 @@ jobs:
           git commit -m "makecsv"
           
       - name: Push changes
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes == 'block.txt'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

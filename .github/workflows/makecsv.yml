@@ -14,14 +14,20 @@ jobs:
       
       - name: Count lines in block.txt
         id: count_lines
-        run: echo "::set-output name=lines::$(wc -l < block.txt)"
+        run: |
+          lines=$(wc -l < block.txt)
+          echo "Number of lines in block.txt: $lines"
+          echo "::set-output name=lines::$lines"
       
       - name: Update custom property with line count
-        run: echo "Rules=${{ steps.count_lines.outputs.lines }}" >> $GITHUB_ENV
+        run: |
+          echo "Rules=${{ steps.count_lines.outputs.lines }}" >> $GITHUB_ENV
+          echo "Rules property updated with line count"
           
       - name: Add Block Prefix
         if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
         run: |
+          echo "Adding Block prefix to Block.csv..."
           # Add Action,Url as the first line
           echo "Action,Url" > Block.csv
           
@@ -29,14 +35,17 @@ jobs:
           tail -n +2 block.txt | while IFS= read -r line; do
             echo "Block,$line" >> Block.csv
           done
+          echo "Block prefix added successfully."
           
       - name: Commit changes
         if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
         run: |
+          echo "Committing changes..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add Block.csv
           git commit -m "makecsv"
+          echo "Changes committed successfully."
           
       - name: Push changes
         if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0

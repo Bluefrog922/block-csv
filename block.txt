@@ -1,6 +1,7 @@
-*unblocked**game*
+##// Blocklist
+*unblock**game*
 *game**pro*
-*games**site*
+*game**site*
 *gaming**online*
 *play**free*
 *arcade**fun*

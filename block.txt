@@ -28,7 +28,7 @@
 *game**flash*
 *multiplayer**online*
 *coop**multiplayer*
-*games**unblock*
+*game**unblock*
 *guns*
 *deeeep*io*
 *slither*
@@ -59,3 +59,8 @@ agame.com
 *football*stars*
 *arcade**game*
 *funny**game*
+*io**game*
+*game**io*
+*1v1*lol*
+*just*aim*lol*
+*roblox*

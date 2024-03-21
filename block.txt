@@ -52,8 +52,7 @@ agame.com
 *ninja*io*
 *basketball*stars*
 *slope*io*
-*run3*
-*run-3*
+*run*3*
 *shooting**game
 *game**shooting*
 *football*stars*
@@ -71,3 +70,12 @@ agame.com
 *clicker**game*
 *game**clicker
 *krunker*io*
+*run*2*
+*slope*run*
+*poki*
+*shell*shockers*
+*smash*karts*
+*wormax*io*
+*agar*io*
+*suika*game*
+*suika*gg*

@@ -52,7 +52,7 @@ Block,*classroom*6x*
 Block,*ninja*io*
 Block,*basketball*stars*
 Block,*slope*io*
-Block,*run*3*
+Block,*run**3*
 Block,*shooting**game
 Block,*game**shooting*
 Block,*football*stars*
@@ -70,7 +70,7 @@ Block,*cookie*clicker*
 Block,*clicker**game*
 Block,*game**clicker
 Block,*krunker*io*
-Block,*run*2*
+Block,*run**2*
 Block,*slope*run*
 Block,*poki*
 Block,*shell*shockers*
@@ -78,3 +78,18 @@ Block,*smash*karts*
 Block,*wormax*io*
 Block,*agar*io*
 Block,*suika*game*
+Block,*suika*gg*
+Block,*player03*
+Block,*google**doodle**game*
+Block,*doodles*google*
+Block,*crazy**games*
+Block,*google.com/logos/**
+Block,*apes*io*
+Block,enjoy4fun.com
+Block,*drift*hunters*
+Block,*silver*game*
+Block,*tetris*
+Block,*bloxd*io*
+Block,*eggy*car*io*
+Block,*io*game*
+Block,*game*io

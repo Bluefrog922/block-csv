@@ -12,6 +12,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
+      - name: Run Python script
+        run: python random-proxy.com-grabber.py
+        # Replace 'python random-proxy.com-grabber.py' with the actual command to run your script
+      
       - name: Count lines in block.txt
         id: count_lines
         run: |
@@ -27,13 +31,13 @@ jobs:
       - name: Add Block Prefix
         if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
         run: |
-          echo "Adding Block prefix to Block.csv..."
+          echo "Adding Block prefix to block.csv..."
           # Add Action,Url as the first line
-          echo "Action,Url" > Block.csv
+          echo "Action,Url" > block.csv
           
           # Read the remaining list from the block.txt file and add Block prefix
           tail -n +2 block.txt | while IFS= read -r line; do
-            echo "Block,$line" >> Block.csv
+            echo "Block,$line" >> block.csv
           done
           echo "Block prefix added successfully."
           
@@ -43,8 +47,8 @@ jobs:
           echo "Committing changes..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add Block.csv
-          git commit -m "makecsv"
+          git add block.csv
+          git commit -m "Update block.csv"
           echo "Changes committed successfully."
           
       - name: Push changes

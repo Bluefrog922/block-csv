@@ -1,5 +1,6 @@
 import requests
 import re
+import os
 
 def unscramble_from_hex(encoded_string):
     result = ''
@@ -30,12 +31,13 @@ def check_domain_in_file(domain, filename):
         return domain in existing_domains
 
 def write_domains_to_file(domains, filename):
-    with open(filename, 'a+') as file:
-        if file.tell() != 0 and file.seek(-1, 2) != ord('\n'):
-            file.write('\n')
+    mode = 'a+' if os.path.exists(filename) and os.path.getsize(filename) > 0 else 'w'
+    with open(filename, mode) as file:
         for domain in domains:
             domain = domain.strip()
             if domain and not check_domain_in_file(domain, filename):
+                if mode == 'a+' and not file.seek(-1, os.SEEK_END).endswith(b'\n'):
+                    file.write('\n')
                 file.write(domain + '\n')
 
 def process_domains(url, filename):

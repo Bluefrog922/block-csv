@@ -28,17 +28,6 @@ jobs:
           echo "Rules=${{ steps.count_lines.outputs.lines }}" >> $GITHUB_ENV
           echo "Rules property updated with line count"
           
-      - name: Add Block Prefix to block.txt
-        if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
-        run: |
-          echo "Adding Block prefix to block.txt..."
-          # Read the remaining list from the block.txt file and add Block prefix
-          tail -n +2 block.txt | while IFS= read -r line; do
-            echo "Block,$line" >> block.txt.tmp
-          done
-          mv block.txt.tmp block.txt
-          echo "Block prefix added to block.txt successfully."
-          
       - name: Add Block Prefix to block.csv
         if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
         run: |
@@ -58,8 +47,8 @@ jobs:
           echo "Committing changes..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add block.txt block.csv
-          git commit -m "Update block.txt and block.csv"
+          git add block.csv block.txt
+          git commit -m "Update block.csv"
           echo "Changes committed successfully."
           
       - name: Push changes

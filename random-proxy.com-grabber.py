@@ -31,19 +31,16 @@ def check_domain_in_file(domain, filename):
 
 def write_domains_to_file(domains, filename):
     with open(filename, 'a+') as file:
-        existing_domains = {line.strip() for line in file}
         for domain in domains:
-            if domain not in existing_domains:
+            domain = domain.strip()
+            if domain and not check_domain_in_file(domain, filename):
                 file.write(domain + '\n')
-                existing_domains.add(domain)
 
 def process_domains(url, filename):
     decoded_domains = scrape_and_decode_domains(url)
-    for domain in decoded_domains:
-        if not check_domain_in_file(domain, filename):
-            write_domains_to_file([domain], filename)
+    write_domains_to_file(decoded_domains, filename)
 
 url = "https://random-proxy.com/"
 output_file = "block.txt"
 process_domains(url, output_file)
-print(f"Random proxes written to {output_file}.")
+print(f"Random proxies written to {output_file}.")

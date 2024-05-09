@@ -31,12 +31,12 @@ def check_domain_in_file(domain, filename):
 
 def write_domains_to_file(domains, filename):
     with open(filename, 'a+') as file:
+        if file.tell() != 0 and file.seek(-1, 2) != ord('\n'):
+            file.write('\n')
         for domain in domains:
             domain = domain.strip()
             if domain and not check_domain_in_file(domain, filename):
-                if file.tell() != 0:
-                    file.write('\n')
-                file.write(domain)
+                file.write(domain + '\n')
 
 def process_domains(url, filename):
     decoded_domains = scrape_and_decode_domains(url)

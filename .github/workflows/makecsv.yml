@@ -17,26 +17,26 @@ jobs:
         run: echo "::set-output name=workflow_changes::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
       
       - name: Add Block Prefix
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes != 'block.csv'
         run: |
           # Add Action,Url as the first line
-          echo "Action,Url" > Block.csv
+          echo "Action,Url" > block.csv
           
           # Read the remaining list from the block.txt file and add Block prefix
           tail -n +2 block.txt | while IFS= read -r line; do
-            echo "Block,$line" >> Block.csv
+            echo "Block,$line" >> block.csv
           done
           
       - name: Commit changes
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes != 'block.csv'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add Block.csv
+          git add block.csv
           git commit -m "Add Block prefix to list items"
           
       - name: Push changes
-        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
+        if: steps.check_changes.outputs.workflow_changes != 'block.csv'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

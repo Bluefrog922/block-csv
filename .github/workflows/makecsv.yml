@@ -12,47 +12,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       
-      - name: Run Python script
-        run: python random-proxy.com-grabber.py
-        # Replace 'python random-proxy.com-grabber.py' with the actual command to run your script
+      - name: Check if changes are made by workflow
+        id: check_changes
+        run: echo "::set-output name=workflow_changes::$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})"
       
-      - name: Count lines in block.txt
-        id: count_lines
+      - name: Add Block Prefix
+        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
         run: |
-          lines=$(wc -l < block.txt)
-          echo "Number of lines in block.txt: $lines"
-          echo "::set-output name=lines::$lines"
-      
-      - name: Update custom property with line count
-        run: |
-          echo "Rules=${{ steps.count_lines.outputs.lines }}" >> $GITHUB_ENV
-          echo "Rules property updated with line count"
-          
-      - name: Add Block Prefix to block.csv
-        if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
-        run: |
-          echo "Adding Block prefix to block.csv..."
           # Add Action,Url as the first line
-          echo "Action,Url" > block.csv
+          echo "Action,Url" > Block.csv
           
           # Read the remaining list from the block.txt file and add Block prefix
           tail -n +2 block.txt | while IFS= read -r line; do
-            echo "Block,$line" >> block.csv
+            echo "Block,$line" >> Block.csv
           done
-          echo "Block prefix added to block.csv successfully."
           
       - name: Commit changes
-        if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
+        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
         run: |
-          echo "Committing changes..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add block.csv block.txt
-          git commit -m "Update block.csv"
-          echo "Changes committed successfully."
+          git add Block.csv
+          git commit -m "Add Block prefix to list items"
           
       - name: Push changes
-        if: github.event_name == 'push' && steps.count_lines.outputs.lines > 0
+        if: steps.check_changes.outputs.workflow_changes != 'Block.csv'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
